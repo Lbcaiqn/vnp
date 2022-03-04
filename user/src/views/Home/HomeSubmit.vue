@@ -67,7 +67,8 @@ export default {
             cut: this.$store.state.cut,
             gro: this.$store.state.gro,
             xt: xtArr,
-            yt: ytArr
+            yt: ytArr,
+            desc:this.$store.state.desc
           }
           
 

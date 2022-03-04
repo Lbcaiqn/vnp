@@ -9,24 +9,22 @@ plt.rcParams['axes.unicode_minus'] = False
 
 
 # 解析参数-------------------------------------------------------------
-<<<<<<< HEAD
+
 with open('../py/1.json','r',encoding='utf8')as fp:
     jsonData = json.load(fp)
-=======
-f = codecs.open(r'../py/1.txt', 'r+', encoding='utf-8')
-argv=f.read().split(' ')
-f.close()
->>>>>>> 50b2b81d77f7aa0f3a3844ed9e1e9d8c255517eb
 
 mode = jsonData['mode']
 x=jsonData['x']
 y=jsonData['y']
 cal=jsonData['cal']
+
 que=jsonData['que']
 cut=jsonData['cut']
 gro=jsonData['gro']
 xt=jsonData['xt']
 yt=jsonData['yt']
+
+desc=jsonData['desc']
 
 # #-----------------------------------------------------------------------
 
@@ -109,10 +107,10 @@ if mode != 'pie':
 #画板样式---------------------------------------------------
 plt.figure(figsize=(10,6))
 plt.style.use('dark_background')
-# plt.title(title)
-# if mode != 'pie':
-  # plt.xlabel(xName[0]) 
-  # plt.ylabel(yName[0]) 
+plt.title(desc['title']['val'][0])
+if mode != 'pie':
+  plt.xlabel(desc['xLabel']['val'][0]) 
+  plt.ylabel(desc['yLabel']['val'][0]) 
 #----------------------------------------------------------------
 
 #xy轴刻度间隔与上下限----------------------------------------------------------
@@ -147,30 +145,32 @@ if mode != 'pie':
 #散点图
 
 if mode == 'scatter':
-  plt.scatter(xd[0], yd[0], label=' ')
+  plt.scatter(xd[0], yd[0], label=desc['legend']['val'][0])
 #折线图
 elif mode == 'plot':
   for i in range(0,len(yd)):
-    plt.plot(xd[0],yd[i], label=' ')
+    plt.plot(xd[0],yd[i], label=desc['legend']['val'][i])
 #柱状图
 elif mode == 'bar':
   if len(yd) == 1 :
-    plt.bar(xd[0], yd[0],color="blue", label=' ')
+    plt.bar(xd[0], yd[0],color="blue", label=desc['legend']['val'][0])
 
   elif len(yd) == 2 :
     wid=4/xd[0].size
-    plt.bar(xd[0]-wid/2, yd[0],color='blue',width=wid, label=' ')
-    plt.bar(xd[0]+wid/2, yd[1],color='red',width=wid, label=' ')
+    plt.bar(xd[0]-wid/2, yd[0],color='blue',width=wid, label=desc['legend']['va;'][0])
+    plt.bar(xd[0]+wid/2, yd[1],color='red',width=wid, label=desc['legend']['val'][1])
   elif len(yd) == 3 :
     wid=2/xd[0].size
-    plt.bar(xd[0]-wid, yd[0],width=wid,color='blue', label=' ')
-    plt.bar(xd[0], yd[1],width=wid,color='red', label=' ')
-    plt.bar(xd[0]+wid, yd[2],width=wid,color='orange', label=' ')
+    plt.bar(xd[0]-wid, yd[0],width=wid,color='blue', label=desc['legend']['val'][0])
+    plt.bar(xd[0], yd[1],width=wid,color='red', label=desc['legend']['val'][1])
+    plt.bar(xd[0]+wid, yd[2],width=wid,color='orange', label=desc['legend']['val'][2])
 # elif mode == 'pie':
   # pieData = data[cutName].value_counts()
   # plt.pie(x=pieData,labels=pieData.index)
 
-plt.legend() 
+
+if desc['legend']['useLegend']:
+  plt.legend() 
 savePath='./public/'+mode+'.jpg'
 plt.savefig(savePath)
 #------------------------------------------------------------------

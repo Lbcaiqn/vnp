@@ -2,7 +2,8 @@
   <div id="home">
     <HomeUpload @beforeUpload="beforeUpload" @afterUpload="afterUpload"></HomeUpload>
     <HomeMain :cols="cols"></HomeMain>
-    <HomeOption></HomeOption>    
+    <HomeOption></HomeOption>
+    <HomeStyle></HomeStyle>    
     <HomeSubmit></HomeSubmit>
     <HomeImg></HomeImg>
   </div>
@@ -12,6 +13,7 @@
 import HomeUpload from './HomeUpload.vue'
 import HomeMain from './HomeMain.vue'
 import HomeOption from './HomeOption.vue'
+import HomeStyle from './HomeStyle.vue'
 import HomeSubmit from './HomeSubmit.vue'
 import HomeImg from './HomeImg.vue'
 
@@ -21,6 +23,7 @@ export default {
     HomeUpload,
     HomeMain,
     HomeOption,
+    HomeStyle,
     HomeSubmit,
     HomeImg
   },

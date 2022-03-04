@@ -14,7 +14,7 @@
     
 
 
-
+    
     <el-row :gutter="20">
       <el-col :span="2">{{ chart.text }}</el-col>
       <el-col :span="4">
@@ -62,6 +62,8 @@
 </template>
 
 <script>
+import EventBus from '../../EventBus/index.js'
+
 export default {
   props:{
     cols:{
@@ -101,15 +103,25 @@ export default {
       }
   },
   methods:{
-      chartChange() {
+      chartChange(){
         this.xy = {
           x: { text: "X轴：", sel: { sum: 1, isSl: [this.xy.x.sel.isSl[0]] } },
           y: { text: "Y轴：", sel: { sum: 1, isSl: [this.xy.y.sel.isSl[0]] } },
         }
         this.calculateNewColumn = [this.calculateNewColumn[0]];
-        this.gro.isSl = ["mean"];
+        this.gro.isSl = ["mean"]
+
+        EventBus.$emit('chartChange',this.chart.isSelectChart)
       },
       xyChange(xy, sum) {
+        let isSl = ''
+        if(xy.sel.isSl[sum-1] != 'calculate') isSl = this.cols[parseInt(xy.sel.isSl[sum-1]) + 1].text.substr(2)
+        EventBus.$emit('xyChange',{
+          xy: xy.text,
+          sum,
+          isSl,
+        })
+        
         if (xy.text == "Y轴：") {
           if (xy.sel.isSl[sum-1] == "calculate") {
             this.calculateNewColumn[sum - 1].isShow = true;
@@ -126,8 +138,10 @@ export default {
           this.xy.y.sel.sum = sum;
           this.xy.y.sel.isSl.push('');
           this.calculateNewColumn.push({ str: "", isShow: false });
-          this.gro.isSl.push("mean");
+          this.gro.isSl.push("mean")
+          EventBus.$emit('addY')
         }
+         
       },
       redPlotY() {
         let sum = this.xy.y.sel.sum - 1;
@@ -136,6 +150,7 @@ export default {
           this.xy.y.sel.isSl.pop();
           this.calculateNewColumn.pop();
           this.gro.isSl.pop();
+          EventBus.$emit('redY')
         }
       },
       checkCalStr(str, i) {
@@ -201,6 +216,12 @@ export default {
         })
       }
     }
+  },
+  beforeDestory(){
+    EventBus.$off('chartChange')
+    EventBus.$off('xyChange')
+    EventBus.$off('addY')
+    EventBus.$off('redY')
   }
 }
 </script>
