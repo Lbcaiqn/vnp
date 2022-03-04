@@ -1,0 +1,1 @@
+{"filePath":"../py/csv/city_temperature.csv","mode":"plot","x":["6"],"y":["7","7"],"cal":["",""],"que":{"useQue":true,"que":"Year >= 2000"},"cut":{"useCut":false,"cutBins":"","cutLabels":""},"gro":{"useGro":true,"gro":["mean","max"]},"xt":["setting0","2000","2010","2000","2006","2"],"yt":["default1","","","","",""]}
