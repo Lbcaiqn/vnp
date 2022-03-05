@@ -46,12 +46,8 @@ const store = new Vuex.Store({
         {iid:'4',text:''},
       ],
     },
-    desc:{
-      title: {iid:'标题：',val:['']},
-      xLabel: {iid:'X轴：',val:['']},
-      yLabel: {iid:'Y轴：',val:['']},
-      legend: {iid:'图例：',val:[''],useLegend: false},
-    },
+    desc:{},
+    style:{},
     
     imgURL: '#'
     

@@ -13,9 +13,39 @@
         
       </div>
       <div>
-        <el-row><h3>作图的样式</h3></el-row>
+        <el-row v-show="$store.state.mode != ''"><h3>作图的样式</h3></el-row>
+        <table v-show="$store.state.mode == mIndex" v-for="(m,mIndex) in style" :key="mIndex">
+          <tr v-for="(i,iIndex) in m" :key="iIndex">
+
+            <td v-if="mIndex == 'scatter'">散点：</el-td>
+            <td v-if="mIndex == 'plot'">线{{iIndex+1}}：</td>
+            <td v-if="mIndex == 'bar'">柱{{iIndex+1}}：</td>
+            
+            <td v-for="(j,jIndex) in i" :key="jIndex">
+              <div v-if="jIndex.substr(jIndex.length-5,jIndex.length) == 'color'">
+                {{j.iid}}
+                <el-color-picker v-model="j.val"></el-color-picker>
+              </div>
+
+              <div v-if="jIndex.substr(jIndex.length-5,jIndex.length) != 'color' && jIndex.substr(jIndex.length-5,jIndex.length) != 'width'">
+                {{j.iid}}
+                <el-select v-model="j.val.isSl">
+                  <el-option :value="opt.iid" :label="opt.text" v-for="(opt, optIndex) in j.val.opt" :key="optIndex"></el-option>
+                </el-select>
+              </div>
+
+              <div v-if="jIndex.substr(jIndex.length-5,jIndex.length) == 'width'">
+                <el-col :span="6">{{j.iid}}</el-col>
+                <el-col :span="8"><el-input v-model="j.val" size="mini" @input="checkWid($event,iIndex)" ></el-input></el-col>
+              </div>
+
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
+
+    
   </div>
 </template>
 
@@ -31,19 +61,97 @@ export default {
         xLabel: {iid:'X轴：',val:['']},
         yLabel: {iid:'Y轴：',val:['']},
         legend: {iid:'图例：',val:[''],useLegend: false},
+      },
+      style: {
+        scatter: [
+          {
+            color: {iid:'颜色：',val:'#ffffff'},
+            marker: {iid:'点型：',val:{isSl: 'o',opt:[
+              {iid:'o',text:'圆点'},
+              {iid:'.',text:'小点'},
+              {iid:'s',text:'正方形'},
+              {iid:'p',text:'五角形'},
+              {iid:'*',text:'*'},
+            ]}}
+          },
+        ],
+        plot: [{
+            color: {iid:'颜色：',val:'#ffffff'},
+            ilnestyle: {iid:'线型：',val:{isSl: '-',opt:[
+              {iid:'-',text:'实线'},
+              {iid:'--',text:'虚线'},
+              {iid:'-.',text:'点线'},
+            ]}},
+            marker: {iid:'点型：',val:{isSl: 'default',opt:[
+              {iid:'default',text:'不使用'},
+              {iid:'.',text:'实点'},
+              {iid:'o',text:'圆形'},
+
+            ]}},
+            linewidth: {iid:'线宽：',val:'1'}
+          }],
+        bar: [{
+            color: {iid:'颜色：',val:'#00f'},
+            barwidth: {iid:'柱宽：',val:'0.8'},
+          }],
       }
     }
   },
+  
   methods:{
     clickDropdown(){
       this.isDropdown = !this.isDropdown
+    },
+    checkWid(e,i){
+      if(e[e.length-1] < '0' || e[e.length-1] > '9')
+        this.style.plot[i].linewidth.val = this.style.plot[i].linewidth.val.substr(0,this.style.plot[i].linewidth.val.length-1)
     }
   },
   mounted(){
     EventBus.$on('chartChange',(title)=>{
       this.desc.yLabel = {iid: 'Y轴：',val:[this.desc.yLabel.val[0]]}
-      this.desc.legend = {iid: '图例：',val:[this.desc.legend.val[0]]}
+      this.desc.legend = {iid: '图例：',val:[this.desc.legend.val[0]],useLegend: false}
       this.desc.title.val[0] = title
+
+      this.style = {
+        scatter: [
+          {
+            color: {iid:'颜色：',val:'#ffffff'},
+            marker: {iid:'点型：',val:{isSl: 'o',opt:[
+              {iid:'o',text:'圆点'},
+              {iid:'.',text:'小点'},
+              {iid:'s',text:'正方形'},
+              {iid:'p',text:'五角形'},
+              {iid:'*',text:'*'},
+            ]}}
+          },
+        ],
+        plot: [{
+            color: {iid:'颜色：',val:'#ffffff'},
+            ilnestyle: {iid:'线型：',val:{isSl: '-',opt:[
+              {iid:'-',text:'实线'},
+              {iid:'--',text:'虚线'},
+              {iid:'-.',text:'点线'},
+            ]}},
+            marker: {iid:'点型：',val:{isSl: 'default',opt:[
+              {iid:'default',text:'不使用'},
+              {iid:'.',text:'实点'},
+              {iid:'o',text:'圆形'},
+
+            ]}},
+            linewidth: {iid:'线宽：',val:'1'}
+          },
+          
+          
+        ],
+        bar: [{
+            color: {iid:'颜色：',val:'#00f'},
+            barwidth: {iid:'柱宽：',val:'0.8'},
+          },
+          
+          
+        ],
+      }
     })
     EventBus.$on('xyChange',(xy)=>{
       if(xy.xy == 'X轴：')  Vue.set(this.desc.xLabel.val,xy.sum-1,xy.isSl)
@@ -54,22 +162,61 @@ export default {
     })
     EventBus.$on('addY',()=>{
       this.desc.legend.val.push('')
+      if(this.$store.state.mode == 'plot'){
+        this.style['plot'].push({
+            color: {iid:'颜色：',val:'#ffffff'},
+            ilnestyle: {iid:'线型：',val:{isSl: '-',opt:[
+              {iid:'-',text:'实线'},
+              {iid:'--',text:'虚线'},
+              {iid:'-.',text:'点线'},
+            ]}},
+            marker: {iid:'点型：',val:{isSl: 'default',opt:[
+              {iid:'default',text:'不使用'},
+              {iid:'.',text:'实点'},
+              {iid:'o',text:'圆形'},
+
+            ]}},
+            linewidth: {iid:'线宽：',val:'1'}
+          })
+      }
+      else if(this.$store.state.mode == 'bar'){
+        let c = this.style['bar'].length == 2 ? '#f00' : '#0f0'
+        this.style['bar'].push({
+            color: {iid:'颜色：',val: c},
+            barwidth: {iid:'柱宽：',val:'0.8'},
+          })
+      }
+      
     })
     EventBus.$on('redY',()=>{
       this.desc.legend.val.pop()
+      this.style[this.$store.state.mode].pop()
     })
   },
   watch:{
     'desc': {
       deep: true,
+      immediate: true,
       handler(){
         this.$store.commit({
           type: 'updateHomeMain',
           key: 'desc',
           value: this.desc
         })
+        
       }
 
+    },
+    'style': {
+      deep: true,
+      immediate: true,
+      handler(){
+        this.$store.commit({
+          type: 'updateHomeMain',
+          key: 'style',
+          value: this.style
+        })
+      }
     }
   }
   
@@ -97,6 +244,12 @@ export default {
   height: 50px;
   line-height: 50px;
  
+}
+
+td {
+  padding: 8px;
+  height: 60px;
+  line-height: 60px;
 }
 
 </style>

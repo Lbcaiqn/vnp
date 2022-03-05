@@ -134,7 +134,7 @@ export default {
       },
       addPlotY() {
         let sum = this.xy.y.sel.sum + 1;
-        if (sum <= 5) {
+        if (sum <= 5 && this.$store.state.mode == 'plot' || sum <= 3 && this.$store.state.mode == 'bar') {
           this.xy.y.sel.sum = sum;
           this.xy.y.sel.isSl.push('');
           this.calculateNewColumn.push({ str: "", isShow: false });

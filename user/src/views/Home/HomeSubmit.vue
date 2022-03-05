@@ -56,7 +56,17 @@ export default {
           }
           for(let i of this.$store.state.xt.xtStr)  xtArr.push(i.text)
           for(let i of this.$store.state.yt.ytStr)  ytArr.push(i.text)
-
+          let style = {scatter:[],plot:[],bar:[],pie:[]}
+          for(let i in this.$store.state.style){
+            for(let j in this.$store.state.style[i]){
+              style[i].push([])
+              for(let k in this.$store.state.style[i][j]){
+                if(typeof this.$store.state.style[i][j][k].val == 'object') style[i][j].push(this.$store.state.style[i][j][k].val.isSl)
+                else style[i][j].push(this.$store.state.style[i][j][k].val)
+              }
+            }
+          }
+          
           const submitData = {
             filePath: this.$store.state.fd.filePath,
             mode: this.$store.state.mode,
@@ -68,7 +78,8 @@ export default {
             gro: this.$store.state.gro,
             xt: xtArr,
             yt: ytArr,
-            desc:this.$store.state.desc
+            desc:this.$store.state.desc,
+            style
           }
           
 

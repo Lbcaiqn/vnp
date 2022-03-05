@@ -141,35 +141,60 @@ if mode != 'pie':
 
 #画图--------------------------------------------#
 
-
 #散点图
 
 if mode == 'scatter':
-  plt.scatter(xd[0], yd[0], label=desc['legend']['val'][0])
+  plt.scatter(xd[0], yd[0], label=desc['legend']['val'][0],
+             color=jsonData['style']['scatter'][0][0],
+             marker=jsonData['style']['scatter'][0][1])
 #折线图
+
 elif mode == 'plot':
   for i in range(0,len(yd)):
-    plt.plot(xd[0],yd[i], label=desc['legend']['val'][i])
+    if jsonData['style']['plot'][i][2] == 'default':
+      jsonData['style']['plot'][i][2] = ''
+    if jsonData['style']['plot'][i][3] == '' or jsonData['style']['plot'][i][3] == '0':
+      jsonData['style']['plot'][i][3] = '1' 
+    for s in jsonData['style']['plot'][i][3]:
+      if s < '0' or s > '9':
+        jsonData['style']['plot'][i][3] = '1'
+        break
+    
+    
+    plt.plot(xd[0],yd[i], label=desc['legend']['val'][i],
+            color=jsonData['style']['plot'][i][0],
+            linestyle=jsonData['style']['plot'][i][1],
+            marker=jsonData['style']['plot'][i][2],
+            linewidth=int(jsonData['style']['plot'][i][3])
+            
+            )
 #柱状图
 elif mode == 'bar':
   if len(yd) == 1 :
-    plt.bar(xd[0], yd[0],color="blue", label=desc['legend']['val'][0])
+    plt.bar(xd[0], yd[0], label=desc['legend']['val'][0],
+           color=jsonData['style']['bar'][0][0] )
+    
 
   elif len(yd) == 2 :
     wid=4/xd[0].size
-    plt.bar(xd[0]-wid/2, yd[0],color='blue',width=wid, label=desc['legend']['va;'][0])
-    plt.bar(xd[0]+wid/2, yd[1],color='red',width=wid, label=desc['legend']['val'][1])
+    plt.bar(xd[0]-wid/2, yd[0],width=wid, label=desc['legend']['val'][0],
+           color=jsonData['style']['bar'][0][0])
+    plt.bar(xd[0]+wid/2, yd[1],width=wid, label=desc['legend']['val'][1],
+            color=jsonData['style']['bar'][1][0])
   elif len(yd) == 3 :
     wid=2/xd[0].size
-    plt.bar(xd[0]-wid, yd[0],width=wid,color='blue', label=desc['legend']['val'][0])
-    plt.bar(xd[0], yd[1],width=wid,color='red', label=desc['legend']['val'][1])
-    plt.bar(xd[0]+wid, yd[2],width=wid,color='orange', label=desc['legend']['val'][2])
+    plt.bar(xd[0]-wid, yd[0],width=wid, label=desc['legend']['val'][0],
+            color=jsonData['style']['bar'][0][0])
+    plt.bar(xd[0], yd[1],width=wid, label=desc['legend']['val'][1],
+            color=jsonData['style']['bar'][1][0])
+    plt.bar(xd[0]+wid, yd[2],width=wid, label=desc['legend']['val'][2],
+            color=jsonData['style']['bar'][2][0])
 # elif mode == 'pie':
   # pieData = data[cutName].value_counts()
   # plt.pie(x=pieData,labels=pieData.index)
 
 
-if desc['legend']['useLegend']:
+if jsonData['desc']['legend']['useLegend']:
   plt.legend() 
 savePath='./public/'+mode+'.jpg'
 plt.savefig(savePath)
