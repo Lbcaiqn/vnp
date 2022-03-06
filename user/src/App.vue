@@ -1,12 +1,15 @@
 <template>
   <div id="app">
     <section style="height: 400px;"></section>
-    <Home></Home>
+    <!-- <Home></Home> -->
+    <router-view></router-view>
+    
   </div>
 </template>
 
 <script>
 import Home from './views/Home/Home.vue'
+
 export default {
   components:{
     Home
@@ -20,9 +23,12 @@ export default {
   margin: 0;
   padding: 0;
 }
-#app {
-  color: #fff;
+body {
   background: url(./assets/img/a.png) no-repeat fixed;
   background-size: 100%;
+}
+#app {
+  color: #fff;
+  
 }
 </style>

@@ -6,14 +6,14 @@
         <el-row><h3>图表的文本信息</h3></el-row>
         <el-row><el-checkbox v-model="desc.legend.useLegend">显示图例</el-checkbox></el-row>
         <el-row :gutter="20" v-for="i in desc" :key="i.iid" v-show="i.iid != '图例：' || desc.legend.useLegend">
-          <el-col :span="2">{{i.iid}}</el-col>
-          <el-col :span="4" v-for="(j,jIndex) in i.val" :key="jIndex"><el-input v-model="i.val[jIndex]"></el-input></el-col>
+          <el-col v-if="i.iid=='标题：' || $store.state.mode!='pie'" :span="2">{{i.iid}}</el-col>
+          <el-col v-if="i.iid=='标题：' || $store.state.mode!='pie'" :span="4" v-for="(j,jIndex) in i.val" :key="jIndex"><el-input v-model="i.val[jIndex]"></el-input></el-col>
         </el-row>
         
         
       </div>
       <div>
-        <el-row v-show="$store.state.mode != ''"><h3>作图的样式</h3></el-row>
+        <el-row v-show="$store.state.mode != '' && $store.state.mode != 'pie'"><h3>作图的样式</h3></el-row>
         <table v-show="$store.state.mode == mIndex" v-for="(m,mIndex) in style" :key="mIndex">
           <tr v-for="(i,iIndex) in m" :key="iIndex">
 
@@ -180,16 +180,27 @@ export default {
           })
       }
       else if(this.$store.state.mode == 'bar'){
-        let c = this.style['bar'].length == 2 ? '#f00' : '#0f0'
+        let c = this.style['bar'].length == 2 ? '#0f0' : '#f00'
+        let w = this.style['bar'].length == 2 ? '0.26' : '0.4'
+        for(let i in this.style['bar']){
+          this.style['bar'][i].barwidth.val = w
+        }
+
         this.style['bar'].push({
             color: {iid:'颜色：',val: c},
-            barwidth: {iid:'柱宽：',val:'0.8'},
+            barwidth: {iid:'柱宽：',val:w},
           })
       }
       
     })
     EventBus.$on('redY',()=>{
       this.desc.legend.val.pop()
+
+      let w = this.style['bar'].length == 2 ? '1' : '0.4'
+      for(let i in this.style['bar']){
+        this.style['bar'][i].barwidth.val = w
+      }
+
       this.style[this.$store.state.mode].pop()
     })
   },

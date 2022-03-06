@@ -27,17 +27,20 @@ export default {
   methods:{
     clickSubmit() {
       this.tipsText = ''
+      this.$store.state.imgURL = "#"
+      
       if (this.$store.state.fd.filePath == '') this.tipsText = "请先上传文件";
       else if (this.$store.state.mode == '') this.tipsText = "请选择要画的图";
       else {
         let flag = true;
-        for(let i in  this.$store.state.x){
+        for(let i in  this.$store.state.y){
           if(this.$store.state.x[i] == '' || this.$store.state.y[i] == ''){
             flag = false
             this.tipsText = '请选择完X/Y数据'
             break
           }
         }
+        
         
        
         if(this.$store.state.mode == 'pie' && this.$store.state.x[0] != ''){
@@ -46,7 +49,6 @@ export default {
         }
         if (flag) {
           this.isSubmit = true
-          this.$store.state.imgURL = "#"
           
           let calArr = [],xtArr = [this.$store.state.xt.xtSl],ytArr = [this.$store.state.yt.ytSl]
           for (let i of this.$store.state.cal) {
@@ -72,6 +74,7 @@ export default {
             mode: this.$store.state.mode,
             x: this.$store.state.x,
             y: this.$store.state.y,
+            barStyle: this.$store.state.barStyle,
             cal: calArr,
             que: this.$store.state.que,
             cut: this.$store.state.cut,

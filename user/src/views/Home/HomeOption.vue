@@ -21,6 +21,22 @@
         </div>
 
         <div>
+          <el-row><el-col><h3>数据分组</h3></el-col></el-row>
+          <el-row>
+      <el-col style="text-align: left;"><el-checkbox v-model="gro.useGro">按X轴数据进行分组</el-checkbox></el-col>
+    </el-row>
+    <el-row :gutter="20" v-show="gro.useGro">
+        <el-col :span="2">Y处理：</el-col>
+        <el-col :span="4" v-for="(groSel, index) in gro.isSl" :key="index">
+          <el-select v-model="gro.isSl[index]">
+            <el-option v-for="i,iIndex in gro.opt" :key="iIndex" :value="i.iid" :label="i.text"></el-option>
+          </el-select>
+        </el-col>
+      </el-row>
+        </div>
+
+        <div v-if="this.$store.state.mode == 'pie'">
+          
            <el-row>
              <el-col :span="12"><h3>数值型数据转为类别型数据</h3></el-col>
            </el-row>
@@ -60,6 +76,8 @@
 </template>
 
 <script>
+import EventBus from '../../EventBus/index.js'
+
 export default {
   data(){
     return {
@@ -69,6 +87,16 @@ export default {
         useQue: false,
         que: "",
       },
+      //gro
+      gro: {
+          useGro: false,
+          isSl: ["mean"],
+          opt: [
+            { iid: "mean", text: "平均值" },
+            { iid: "min", text: "最小值" },
+            { iid: "max", text: "最大值" },
+          ],
+        },
       //cut
       cut:{
         useCut:false,
@@ -123,9 +151,21 @@ export default {
       this.isDropdown = !this.isDropdown
     }
   },
+  mounted(){
+    EventBus.$on('chartChange',mode => {
+      this.gro.isSl = ["mean"]
+    })
+    EventBus.$on('addY',()=>{
+      this.gro.isSl.push("mean")
+    })
+    EventBus.$on('redY',()=>{
+      this.gro.isSl.pop()
+    })
+  },
   watch:{
     'que':{
       deep: true,
+      immediate: true,
       handler(){
         this.$store.commit({
           type: 'updateHomeOption',
@@ -134,8 +174,20 @@ export default {
         })
       }
     },
+    'gro':{
+      deep: true,
+      immediate: true,
+      handler(){
+        this.$store.commit({
+          type: 'updateHomeMain',
+          key: 'gro',
+          value: {useGro: this.gro.useGro, gro: this.gro.isSl}
+        })
+      }
+    },
     'cut':{
       deep: true,
+      immediate: true,
       handler(){
         this.$store.commit({
           type: 'updateHomeOption',
@@ -146,6 +198,7 @@ export default {
     },
     'ticks':{
       deep: true,
+      immediate: true,
       handler(){
         this.$store.commit({
           type: 'updateHomeOption',

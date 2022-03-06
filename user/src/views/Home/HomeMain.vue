@@ -1,19 +1,5 @@
 <template>
   <div id="HomeMain">
-    <!-- <p>fd:{{this.$store.state.fd}}</p>
-    <p>mode:{{this.$store.state.mode}}</p>
-    <p>x:{{this.$store.state.x}}</p>
-    <p>y:{{this.$store.state.y}}</p>
-    <p>cal:{{this.$store.state.cal}}</p>
-    <p>gro:{{this.$store.state.gro}}</p>
-    <p>que:{{this.$store.state.que}}</p>
-    <p>cut:{{this.$store.state.cut}}</p> -->
-    
-    <!-- <p>xt:{{this.$store.state.xt}}</p> -->
-    <!-- <p>yt:{{this.$store.state.yt}}</p> -->
-    
-
-
     
     <el-row :gutter="20">
       <el-col :span="2">{{ chart.text }}</el-col>
@@ -22,10 +8,23 @@
           <el-option v-for="c in chart.chart" :key="c.iid" :value="c.iid" :label="c.text"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="4" :offset="4" v-if="chart.isSelectChart == 'plot' || chart.isSelectChart == 'bar'">
+      <el-col :span="4" v-if="chart.isSelectChart == 'plot' || chart.isSelectChart == 'bar'">
         <el-button @click="redPlotY"><i class="el-icon-minus"></i></el-button>
         <el-button @click="addPlotY"><i class="el-icon-plus"></i></el-button>
       </el-col>
+      <el-col :span="2" v-if="this.chart.isSelectChart == 'bar'">方向：</el-col>
+      <el-col :span="4" v-if="this.chart.isSelectChart == 'bar'">
+        <el-select v-model="barStyle.orientation.isSl">
+          <el-option v-for="i in barStyle.orientation.opt" :key="i.iid" :value="i.iid" :label="i.text"></el-option>
+        </el-select>
+      </el-col>
+      <el-col :span="2" v-if="this.chart.isSelectChart == 'bar' && xy.y.sel.isSl.length >= 2">排列：</el-col>
+      <el-col :span="4" v-if="this.chart.isSelectChart == 'bar' && xy.y.sel.isSl.length >= 2" >
+        <el-select v-model="barStyle.fold.isSl">
+          <el-option v-for="i in barStyle.fold.opt" :key="i.iid" :value="i.iid" :label="i.text"></el-option>
+        </el-select>
+      </el-col>
+
     </el-row>
         
     <el-row :gutter="20" v-for="(xory, xoryIndex) in xy" :key="xoryIndex" v-show="xoryIndex == 'x' || chart.isSelectChart != 'pie'">
@@ -45,17 +44,15 @@
       </el-col>
     </el-row>
 
-    <el-row>
-      <el-col style="text-align: left;"><el-checkbox v-model="gro.useGro">按X轴数据进行分组</el-checkbox></el-col>
-    </el-row>
-    <el-row :gutter="20" v-show="gro.useGro">
-        <el-col :span="2">Y处理：</el-col>
-        <el-col :span="4" v-for="(groSel, index) in gro.isSl" :key="index">
-          <el-select v-model="gro.isSl[index]">
-            <el-option v-for="i,iIndex in gro.opt" :key="iIndex" :value="i.iid" :label="i.text"></el-option>
-          </el-select>
-        </el-col>
-      </el-row>
+    <div class="tipDiv">
+      <h3>提示：</h3>
+      <p v-if="chart.isSelectChart == 'pie'">
+      绘制饼图需要类别型数据，若选择的是数值型数据，可在【高级选项】中转换成类别型数据
+    </p>
+    <p>若选择的数据是一个x值对应多个y值，则需要在【高级选项】中对x进行分组，并将多个y合并成一个值</p>
+    </div>
+
+    
 
 
   </div>
@@ -89,17 +86,24 @@ export default {
           x: { text: "X轴：", sel: { sum: 1, isSl: [""] } },
           y: { text: "Y轴：", sel: { sum: 1, isSl: [""] } },
         },
+        barStyle:{
+          fold: {
+            isSl:'transverse',
+            opt:[
+              {iid:'transverse',text:'并列'},
+              {iid:'vertical',text:'堆叠'}
+            ]
+          },
+          orientation: {
+            isSl:'vertical',
+            opt:[
+              {iid:'vertical',text:'垂直'},
+              {iid:'horizontal',text:'水平'}
+            ]
+          }
+        },
         calculateNewColumn: [{ str: "", isShow: false }],
         
-        gro: {
-          useGro: false,
-          isSl: ["mean"],
-          opt: [
-            { iid: "mean", text: "平均值" },
-            { iid: "min", text: "最小值" },
-            { iid: "max", text: "最大值" },
-          ],
-        },
       }
   },
   methods:{
@@ -109,7 +113,9 @@ export default {
           y: { text: "Y轴：", sel: { sum: 1, isSl: [this.xy.y.sel.isSl[0]] } },
         }
         this.calculateNewColumn = [this.calculateNewColumn[0]];
-        this.gro.isSl = ["mean"]
+        
+        this.barStyle.orientation.isSl = 'vertical'
+        this.barStyle.fold.isSl = 'transverse'
 
         EventBus.$emit('chartChange',this.chart.isSelectChart)
       },
@@ -138,7 +144,6 @@ export default {
           this.xy.y.sel.sum = sum;
           this.xy.y.sel.isSl.push('');
           this.calculateNewColumn.push({ str: "", isShow: false });
-          this.gro.isSl.push("mean")
           EventBus.$emit('addY')
         }
          
@@ -149,7 +154,9 @@ export default {
           this.xy.y.sel.sum = sum;
           this.xy.y.sel.isSl.pop();
           this.calculateNewColumn.pop();
-          this.gro.isSl.pop();
+
+          if(sum == 1) this.barStyle.fold.isSl = 'transverse'
+
           EventBus.$emit('redY')
         }
       },
@@ -199,6 +206,20 @@ export default {
         value: newVal
       })
     },
+    'barStyle': {
+      deep: true,
+      immediate: true,
+      handler(){
+        this.$store.commit({
+          type: 'updateHomeMain',
+          key: 'barStyle',
+          value: {
+            fold: this.barStyle.fold.isSl,
+            orientation: this.barStyle.orientation.isSl
+          }
+        })
+      }
+    },
     'calculateNewColumn'(newVal){
       this.$store.commit({
         type:'updateHomeMain',
@@ -206,16 +227,6 @@ export default {
         value:newVal
       })
     },
-    'gro':{
-      deep: true,
-      handler(){
-        this.$store.commit({
-          type: 'updateHomeMain',
-          key: 'gro',
-          value: {useGro: this.gro.useGro, gro: this.gro.isSl}
-        })
-      }
-    }
   },
   beforeDestory(){
     EventBus.$off('chartChange')
@@ -235,5 +246,11 @@ export default {
   height: 50px;
   line-height: 50px;
   text-align: center;
+}
+.tipDiv {
+  margin-top: 60px;
+}
+.tipDiv p {
+  margin: 10px 0;
 }
 </style>
