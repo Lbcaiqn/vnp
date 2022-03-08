@@ -1,4 +1,4 @@
-const url = 'http://localhost:8000/ShowImg/'
+const url = 'http://39.108.187.254:8000/ShowImg/'
 const purl = url+'population/'
 const turl = url+'temperature/'
 

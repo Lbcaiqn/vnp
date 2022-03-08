@@ -47,7 +47,7 @@ app.all('/aaa',(request,response,next)=>{
         console.log(stdout)
         fs.stat(`./public/DrawImg/${request.body.imgName}.jpg`,(err,data)=>{
           if(err) response.send('#')
-          else  response.send(`http://localhost:8000/DrawImg/${request.body.imgName}.jpg?`+new Date().valueOf())
+          else  response.send(`http://39.108.187.254:8000/DrawImg/${request.body.imgName}.jpg?`+new Date().valueOf())
         })
       
       })
