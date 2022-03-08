@@ -68,12 +68,7 @@ export default {
   margin: 0 auto;
   color: #fff;
   background-color: rgb(50,37,21);
-  border-radius: 0 30px 30px 0;
+  
 }
 
- 
-
-.ticksInput {
-  width: 60px;
-}
 </style>

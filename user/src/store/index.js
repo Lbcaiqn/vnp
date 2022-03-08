@@ -19,6 +19,7 @@ const store = new Vuex.Store({
     cut:{},
     xt:{},
     yt:{},
+    theme: '',
     desc:{},
     style:{},
     

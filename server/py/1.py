@@ -107,7 +107,8 @@ if mode != 'pie':
 
 #画板样式---------------------------------------------------
 plt.figure(figsize=(10,6))
-plt.style.use('dark_background')
+if jsonData['theme'] != 'default' :
+  plt.style.use(jsonData['theme'])
 plt.title(desc['title']['val'][0])
 if mode != 'pie' :
   if barStyle['orientation'] == 'vertical' :
@@ -240,7 +241,7 @@ elif mode == 'pie':
 
 if jsonData['desc']['legend']['useLegend']:
   plt.legend() 
-savePath='./public/'+mode+'.jpg'
+savePath='./public/DrawImg/'+mode+'.jpg'
 plt.savefig(savePath)
 #------------------------------------------------------------------
 

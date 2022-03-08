@@ -85,7 +85,7 @@ export default {
 
 <style scoped>
 #HomeUpload {
-  margin: 20px;
+  margin-left: 20px;
   padding: 20px;
 }
 .uploadBox {

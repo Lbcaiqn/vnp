@@ -81,6 +81,7 @@ export default {
             gro: this.$store.state.gro,
             xt: xtArr,
             yt: ytArr,
+            theme: this.$store.state.theme,
             desc:this.$store.state.desc,
             style
           }

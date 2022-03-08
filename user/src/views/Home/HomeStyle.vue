@@ -2,6 +2,16 @@
   <div id="HomeStyle">
     <div class="dropdown" @click="clickDropdown"><h2>样式选择 <i class="el-icon-arrow-right" v-show="!isDropdown"></i><i class="el-icon-arrow-down" v-show="isDropdown"></i></h2></div>
     <div class="dropdownBox" v-show="isDropdown">
+      
+      <div>
+        <el-row :span="4"><h3>主题</h3></el-row>
+        <el-row>
+          <el-select v-model="theme.isSl" @change="themeChange">
+            <el-option :value="i.iid" :label="i.text" v-for="i in theme.opt" :key="i.iid"></el-option>
+          </el-select>
+        </el-row>
+      </div>
+      
       <div>
         <el-row><h3>图表的文本信息</h3></el-row>
         <el-row><el-checkbox v-model="desc.legend.useLegend">显示图例</el-checkbox></el-row>
@@ -56,6 +66,13 @@ export default {
   data(){
     return {
       isDropdown: false,
+      theme:{
+        isSl: 'default',
+        opt:[
+          {iid:'default',text:'默认'},
+          {iid:'dark_background',text:'黑色模式'},
+        ]
+      },
       desc:{
         title: {iid:'标题：',val:['']},
         xLabel: {iid:'X轴：',val:['']},
@@ -65,7 +82,7 @@ export default {
       style: {
         scatter: [
           {
-            color: {iid:'颜色：',val:'#ffffff'},
+            color: {iid:'颜色：',val:'#000000'},
             marker: {iid:'点型：',val:{isSl: 'o',opt:[
               {iid:'o',text:'圆点'},
               {iid:'.',text:'小点'},
@@ -76,7 +93,7 @@ export default {
           },
         ],
         plot: [{
-            color: {iid:'颜色：',val:'#ffffff'},
+            color: {iid:'颜色：',val:'#000000'},
             ilnestyle: {iid:'线型：',val:{isSl: '-',opt:[
               {iid:'-',text:'实线'},
               {iid:'--',text:'虚线'},
@@ -102,6 +119,24 @@ export default {
     clickDropdown(){
       this.isDropdown = !this.isDropdown
     },
+    themeChange(i){
+      if(i == 'dark_background'){
+        for(let index in this.style.scatter){
+          if(this.style.scatter[index].color.val == '#000000') this.style.scatter[index].color.val = '#ffffff'
+        }
+        for(let index in this.style.plot){
+          if(this.style.plot[index].color.val == '#000000') this.style.plot[index].color.val = '#ffffff'
+        }
+      }
+      else if(i != 'dark_background'){
+        for(let index in this.style.scatter){
+          if(this.style.scatter[index].color.val == '#ffffff') this.style.scatter[index].color.val = '#000000'
+        }
+        for(let index in this.style.plot){
+          if(this.style.plot[index].color.val == '#ffffff') this.style.plot[index].color.val = '#000000'
+        }
+      }
+    },
     checkWid(e,i){
       if(e[e.length-1] < '0' || e[e.length-1] > '9')
         this.style.plot[i].linewidth.val = this.style.plot[i].linewidth.val.substr(0,this.style.plot[i].linewidth.val.length-1)
@@ -112,11 +147,11 @@ export default {
       this.desc.yLabel = {iid: 'Y轴：',val:[this.desc.yLabel.val[0]]}
       this.desc.legend = {iid: '图例：',val:[this.desc.legend.val[0]],useLegend: false}
       this.desc.title.val[0] = title
-
+      this.theme.isSl = 'default'
       this.style = {
         scatter: [
           {
-            color: {iid:'颜色：',val:'#ffffff'},
+            color: {iid:'颜色：',val:'#000000'},
             marker: {iid:'点型：',val:{isSl: 'o',opt:[
               {iid:'o',text:'圆点'},
               {iid:'.',text:'小点'},
@@ -127,7 +162,7 @@ export default {
           },
         ],
         plot: [{
-            color: {iid:'颜色：',val:'#ffffff'},
+            color: {iid:'颜色：',val:'#000000'},
             ilnestyle: {iid:'线型：',val:{isSl: '-',opt:[
               {iid:'-',text:'实线'},
               {iid:'--',text:'虚线'},
@@ -164,7 +199,7 @@ export default {
       this.desc.legend.val.push('')
       if(this.$store.state.mode == 'plot'){
         this.style['plot'].push({
-            color: {iid:'颜色：',val:'#ffffff'},
+            color: {iid:'颜色：',val:'#000000'},
             ilnestyle: {iid:'线型：',val:{isSl: '-',opt:[
               {iid:'-',text:'实线'},
               {iid:'--',text:'虚线'},
@@ -205,6 +240,16 @@ export default {
     })
   },
   watch:{
+    'theme.isSl':{
+      immediate: true,
+      handler(newVal){
+        this.$store.commit({
+          type: 'updateHomeMain',
+          key: 'theme',
+          value: newVal
+        })
+      }
+    },
     'desc': {
       deep: true,
       immediate: true,
@@ -229,7 +274,7 @@ export default {
         })
       }
     }
-  }
+  },
   
 }
 </script>

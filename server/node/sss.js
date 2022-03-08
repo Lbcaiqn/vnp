@@ -5,6 +5,7 @@ let path = require("path")
 const exec = require('child_process').exec
 const multer = require("multer")
 const { RSA_PKCS1_OAEP_PADDING } = require('constants')
+const { content } = require('./data/ShowContent.js')
 
 
 
@@ -30,13 +31,13 @@ app.all('/aaa',(request,response,next)=>{
   else{
     let r=request.body.submitData
     //删除文件
-    let files=[],path='./public'
+    let files=[],path='./public/DrawImg'
     files = fs.readdirSync(path);
     files.forEach((file, index) => {
       let curPath = path + "/" + file;
       fs.unlinkSync(curPath)
     })
-    console.log(typeof request.body)
+    
     fs.writeFile('../py/1.json',JSON.stringify(r),{encoding: 'utf8'},(err)=>{
       exec('python ../py/1.py',(error,stdout,stderr) => {
         if(error) {
@@ -44,9 +45,9 @@ app.all('/aaa',(request,response,next)=>{
             response.send('#')
         }
         console.log(stdout)
-        fs.stat(`./public/${request.body.imgName}.jpg`,(err,data)=>{
+        fs.stat(`./public/DrawImg/${request.body.imgName}.jpg`,(err,data)=>{
           if(err) response.send('#')
-          else  response.send(`http://localhost:8000/${request.body.imgName}.jpg?`+new Date().valueOf())
+          else  response.send(`http://localhost:8000/DrawImg/${request.body.imgName}.jpg?`+new Date().valueOf())
         })
       
       })
@@ -70,6 +71,11 @@ app.post("/upload", multer({ dest: "../py/csv" }).any(), (req, res) => {
     if(err) res.send("上传失败")
     else    res.send(newName)
   })
+})
+
+//返回数据
+app.get('/show',(request,response) => {
+  response.send(content)
 })
 
 
