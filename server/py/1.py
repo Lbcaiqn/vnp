@@ -58,6 +58,7 @@ for index,value in enumerate(y):
           temp.append(temp1 / temp2)
     data[newColName] = temp.pop()
     y[index] = data.columns.size-1
+    
 
 #xval yval
 #当参数为索引时
@@ -103,7 +104,9 @@ if mode != 'pie':
       xd.append(np.array(data[i]))
     for i in yVal:
       yd.append(np.array(data[i]))
-# #-------------------------------------------------------------------
+
+
+#-------------------------------------------------------------------
 
 #画板样式---------------------------------------------------
 plt.figure(figsize=(10,6))
