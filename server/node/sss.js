@@ -29,25 +29,28 @@ app.all('/aaa',(request,response,next)=>{
   response.setHeader("Access-Control-Allow-Methods","DELETE,PUT,POST,GET,OPTIONS");
   if (request.method == 'OPTIONS')  response.send(200);  //让options尝试请求快速结束
   else{
-    let r=request.body.submitData
+    let r=request.body.submitData,fn=request.body.fn
     //删除文件
     let files=[],path='./public/DrawImg'
     files = fs.readdirSync(path);
-    files.forEach((file, index) => {
-      let curPath = path + "/" + file;
-      fs.unlinkSync(curPath)
-    })
+    // files.forEach((file, index) => {
+    //   let curPath = path + "/" + file;
+    //   fs.unlinkSync(curPath)
+    // })
     
-    fs.writeFile('../py/1.json',JSON.stringify(r),{encoding: 'utf8'},(err)=>{
-      exec('python ../py/1.py',(error,stdout,stderr) => {
+    fs.writeFile(`../py/${fn}.json`,JSON.stringify(r),{encoding: 'utf8'},(err)=>{
+      exec('python3 ../py/1.py '+fn,(error,stdout,stderr) => {
         if(error) {
             console.info('pyrhon报错啦'+stderr)
             response.send('#')
+            
+            return next(err)
+            
         }
         console.log(stdout)
-        fs.stat(`./public/DrawImg/${request.body.imgName}.jpg`,(err,data)=>{
+        fs.stat(`./public/DrawImg/${fn}.jpg`,(err,data)=>{
           if(err) response.send('#')
-          else  response.send(`http://39.108.187.254:8000/DrawImg/${request.body.imgName}.jpg?`+new Date().valueOf())
+          else  response.send(`http://47.107.225.248:8000/DrawImg/${fn}.jpg?`+new Date().valueOf())
         })
       
       })

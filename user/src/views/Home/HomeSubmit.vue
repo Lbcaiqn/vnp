@@ -92,6 +92,7 @@ export default {
             method: "post",
             data: {
               submitData,
+              fn:new Date().valueOf() + this.$store.state.mode,
               imgName: this.$store.state.mode
             },
           }).then((res) => {

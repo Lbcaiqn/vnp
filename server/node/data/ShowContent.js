@@ -1,4 +1,4 @@
-const url = 'http://39.108.187.254:8000/ShowImg/'
+const url = 'http://47.107.225.248:8000/ShowImg/'
 const purl = url+'population/'
 const turl = url+'temperature/'
 
@@ -86,20 +86,7 @@ const content = {
         {text: '',img: [url+'temperature/data.png']}
       ]
     },
-    scratter:{
-      title: '散点图',
-      content:[
-        {text:'hahahahahahaha',img:['']},
-        {text:'ccc',img:['../../assets/img/0.png','../../assets/img/a.png']}
-      ]
-    },
-    plot:{
-      title: '折线图',
-      content:[
-        {text:'hahahahahahaha',img:['../../assets/img/a.png']},
-        {text:'aaaa',img:['../../assets/img/0.png','../../assets/img/a.png']}
-      ]
-    }
+    
   }
 }
 

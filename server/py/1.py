@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import sys
 import json
 #解析中文/标点符号
 plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -10,7 +11,7 @@ plt.rcParams['axes.unicode_minus'] = False
 
 # 解析参数-------------------------------------------------------------
 
-with open('../py/1.json','r',encoding='utf8')as fp:
+with open('../py/'+sys.argv[1]+'.json','r',encoding='utf8')as fp:
     jsonData = json.load(fp)
 
 mode = jsonData['mode']
@@ -77,7 +78,7 @@ if mode != 'pie':
 
 
 # #query
-if que['useQue']:
+if que['useQue'] and que['que'] != '':
    data=data.query(que['que'])
 
 #cut
@@ -244,7 +245,7 @@ elif mode == 'pie':
 
 if jsonData['desc']['legend']['useLegend']:
   plt.legend() 
-savePath='./public/DrawImg/'+mode+'.jpg'
+savePath='./public/DrawImg/'+sys.argv[1]+'.jpg'
 plt.savefig(savePath)
 #------------------------------------------------------------------
 
