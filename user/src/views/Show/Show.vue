@@ -1,18 +1,15 @@
 <template>
   <div id="Show">
-    <ShowNav @dataChange="dataChange"></ShowNav>
     <ShowContent :content="content[dataIsSl]"></ShowContent>
   </div>
 </template>
 
 <script>
 import {req} from '../../network/index.js'
-import ShowNav from './ShowNav.vue'
 import ShowContent from './ShowContent.vue'
 
 export default {
   components:{
-    ShowNav,
     ShowContent
   },
   data(){
@@ -24,7 +21,8 @@ export default {
   methods:{
     dataChange(i){
       this.dataIsSl = i
-    }
+    },
+    
   },
   created(){
     req({
@@ -45,4 +43,5 @@ export default {
   color: #fff;
   background-color: rgb(50,37,21);
 }
+
 </style>

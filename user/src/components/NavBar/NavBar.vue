@@ -20,7 +20,7 @@ export default {
       if(i == 0 && this.$route.path != '/Home'){
         this.$router.push('/Home')
       }
-      else if(i == 1 && this.$route.path != '/Show/ShowPopulation'){
+      else if(i == 1 && this.$route.path != '/Show'){
         
         this.$router.push('/Show')
       }
@@ -36,8 +36,8 @@ export default {
   margin: 0 auto;
   
   color: #fff;
-  background-color: rgb(50,37,21);
-  border-bottom: solid 1px #fff;
+  background-color: #000;
+  
 }
 .NavBarBox {
   width: 400px;

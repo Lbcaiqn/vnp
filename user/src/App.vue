@@ -2,7 +2,9 @@
   <div id="app">
     <section style="height: 400px;"></section>
     <NavBar></NavBar>
-    <router-view></router-view>
+    <transition appear name="nav">
+      <router-view></router-view>
+    </transition>
     
   </div>
 </template>
@@ -31,4 +33,14 @@ body {
   color: #fff;
   
 }
+
+.nav-enter,
+.nav-leave-to {
+  opacity: 0;
+}
+.nav-enter-active,
+.nav-leave-active {
+  transition: 0.75s;
+}
+
 </style>

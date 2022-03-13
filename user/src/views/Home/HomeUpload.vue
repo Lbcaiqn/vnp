@@ -1,5 +1,6 @@
 <template>
   <div id="HomeUpload">
+    
     <div class="uploadBox">
       <el-row :gutter="20">
         <el-col :span="4">
@@ -73,7 +74,8 @@ export default {
       
 
       }
-    }
+    },
+   
   }
 }
 
