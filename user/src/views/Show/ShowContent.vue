@@ -5,7 +5,7 @@
     <div class="showNav">
       <el-row :gutter="20">
         <el-col :span="4">
-          <el-select v-model="dataSelect.isSl" @change="pageChange">
+          <el-select v-model="dataSelect.isSl">
             <el-option v-for="i in dataSelect.opt" :key="i.iid" :value="i.iid" :label="i.text"></el-option>
           </el-select>
         </el-col>
@@ -22,7 +22,7 @@
     <div v-show="this.isFix" class="showNav ShowNavFix">
       <el-row :gutter="20">
         <el-col :span="4">
-          <el-select v-model="dataSelect.isSl" @change="pageChange">
+          <el-select v-model="dataSelect.isSl">
             <el-option v-for="i in dataSelect.opt" :key="i.iid" :value="i.iid" :label="i.text"></el-option>
           </el-select>
         </el-col>
@@ -38,7 +38,7 @@
   </div>
 
     <div ref="ShowContent">
-      <div class="contentBox" v-for="(i,iIndex) in content" :key="iIndex">
+      <div class="contentBox" v-for="(i,iIndex) in content[dataSelect.isSl]" :key="iIndex">
       <h1>{{i.title}}</h1>
       <div v-for="(j,jIndex) in i.content" :key="jIndex">
         <h2>{{j.title}}</h2>
@@ -79,24 +79,28 @@ export default {
     }
   },
   methods:{
-    pageChange(i){
-      this.$emit('dataChange',i)
-    },
     scrollFun(){
+      /*试过mounted和@load中获取nav的offwetTop，但是都不对，多了1000，
+      最后干脆直接滚动事件中获取*/
+      if(this.$refs.ShowNav != undefined)
+        this.navY = this.$refs.ShowNav.offsetTop
+      
       let top = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       this.isFix = top >= this.navY ? true : false
-
-      let tag = -1
-      for(let i in this.$refs.ShowContent.children){
-        if(i == 0) continue
-        if(this.$refs.ShowContent.children.length > i){
-          tag = top < this.$refs.ShowContent.children[i].children[0].offsetTop-80 ? tag : i-1
+      
+      if(this.$refs.ShowContent != undefined){
+        let tag = -1
+        for(let i in this.$refs.ShowContent.children){
+          if(i == 0) continue
+          if(this.$refs.ShowContent.children.length > i){
+            tag = top < this.$refs.ShowContent.children[i].children[0].offsetTop-500 ? tag : i-1
+          }
         }
-      }
-      for(let i in this.navSpan){
-        Vue.set(this.navSpan,i,false)
+        for(let i in this.navSpan){
+          Vue.set(this.navSpan,i,false)
       }
       if(tag != -1) Vue.set(this.navSpan,tag,true)
+      }
     },
     clickShowNavItem(i){
       for(let index in this.navSpan){
@@ -108,15 +112,17 @@ export default {
         let moveY = this.$refs.ShowContent.children[i+1].children[0].offsetTop
         // window.scroll(0,moveY-80)
         window.scrollTo({
-          top: moveY-80,
+          top: moveY-79,
           behavior: "smooth"
         })
       }
     }
   },
   mounted(){
-    this.navY = this.$refs.ShowNav.offsetTop
+    
+    
     window.addEventListener('scroll',this.scrollFun)
+
   },
   destoryed(){
     window.removeEventListener('scroll', this.scrollFun)
@@ -151,6 +157,7 @@ li {
 li:hover {
   background-color: orange;
   cursor: pointer;
+  transition: all 0.5s;
 }
 .spanUnderline {
   

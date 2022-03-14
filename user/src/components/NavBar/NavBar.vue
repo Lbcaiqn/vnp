@@ -55,5 +55,6 @@ li {
 }
 li:hover {
   background-color: orange;
+  transition: all 0.5s;
 }
 </style>

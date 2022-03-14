@@ -1,5 +1,5 @@
-// const url = 'http://47.107.225.248:8000/ShowImg/'
-const url = 'http://localhost:8000/ShowImg/'
+const url = 'http://47.107.225.248:8000/ShowImg/'
+// const url = 'http://localhost:8000/ShowImg/'
 
 const purl = url+'population/'
 const turl = url+'temperature/'

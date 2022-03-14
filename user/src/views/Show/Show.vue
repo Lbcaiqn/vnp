@@ -1,6 +1,6 @@
 <template>
   <div id="Show">
-    <ShowContent :content="content[dataIsSl]"></ShowContent>
+    <ShowContent :content="content"></ShowContent>
   </div>
 </template>
 
@@ -14,15 +14,8 @@ export default {
   },
   data(){
     return {
-      dataIsSl: 'population',
       content: {}
     }
-  },
-  methods:{
-    dataChange(i){
-      this.dataIsSl = i
-    },
-    
   },
   created(){
     req({
