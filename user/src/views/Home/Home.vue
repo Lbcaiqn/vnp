@@ -2,7 +2,7 @@
   <div id="home">
     <HomeUpload @beforeUpload="beforeUpload" @afterUpload="afterUpload"></HomeUpload>
     <HomeMain :cols="cols"></HomeMain>
-    <HomeOption></HomeOption>
+    <HomeOption :cols="cols"></HomeOption>
     <HomeStyle></HomeStyle>    
     <HomeSubmit></HomeSubmit>
     <HomeImg></HomeImg>

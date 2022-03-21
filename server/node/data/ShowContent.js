@@ -1,5 +1,5 @@
-const url = 'http://47.107.225.248:8000/ShowImg/'
-// const url = 'http://localhost:8000/ShowImg/'
+// const url = 'http://47.107.225.248:8000/ShowImg/'
+const url = 'http://localhost:8000/ShowImg/'
 
 const purl = url+'population/'
 const turl = url+'temperature/'
@@ -98,7 +98,10 @@ const content = {
     dataDesc: {
       title: '数据说明',
       content: [
-        {text: '',img: [url+'temperature/data.png']}
+        {
+          text: '这份数据是1995年-2019年世界各国重要城市的每年每月每日的日均气温数据，共278万行数据',
+          img: [url+'temperature/data.png']
+        }
       ]
     },
     

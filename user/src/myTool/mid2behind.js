@@ -11,7 +11,7 @@ export const mid2behind=function(zhong){
   //1、遍历中缀表达式
   for(let i of zhong){
     //1.1 如果是数字，不管位数，直接入栈
-    if(i >= '0' && i <= '9' || i == 'c') hou+=i 
+    if(i >= '0' && i <= '9' || i == 'c' || i == '.') hou+=i 
     //1.2 非数字
     else{
       //1.2.1 +=*/

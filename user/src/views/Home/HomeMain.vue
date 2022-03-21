@@ -175,6 +175,7 @@ export default {
         newChar != "c" &&
         newChar != "(" &&
         newChar != ")" &&
+        newChar != "." &&
         !(newChar >= "0" && newChar <= "9")
       ) {
         this.calculateNewColumn[i].str = this.calculateNewColumn[i].str.substr(

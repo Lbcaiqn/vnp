@@ -63,8 +63,16 @@ export default {
             for(let j in this.$store.state.style[i]){
               style[i].push([])
               for(let k in this.$store.state.style[i][j]){
-                if(typeof this.$store.state.style[i][j][k].val == 'object') style[i][j].push(this.$store.state.style[i][j][k].val.isSl)
-                else style[i][j].push(this.$store.state.style[i][j][k].val)
+                if(i != 'pie'){
+                  if(typeof this.$store.state.style[i][j][k].val == 'object') style[i][j].push(this.$store.state.style[i][j][k].val.isSl)
+                  else style[i][j].push(this.$store.state.style[i][j][k].val)
+                }
+                else if(i == 'pie'){
+                  for(let v in this.$store.state.style[i][j]['pie']){
+                    style[i][j].push(this.$store.state.style[i][j]['pie'][v].val)
+                  }
+                  style[i][j].push(this.$store.state.style[i][j]['block'])
+                }
               }
             }
           }
@@ -78,6 +86,7 @@ export default {
             cal: calArr,
             que: this.$store.state.que,
             cut: this.$store.state.cut,
+            rate: this.$store.state.rate,
             gro: this.$store.state.gro,
             xt: xtArr,
             yt: ytArr,

@@ -17,6 +17,7 @@ const store = new Vuex.Store({
     gro:{},
     que:{},
     cut:{},
+    rate:{},
     xt:{},
     yt:{},
     theme: '',
