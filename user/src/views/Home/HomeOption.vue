@@ -13,8 +13,8 @@
               <el-checkbox v-model="que.useQue">使用</el-checkbox>
             </el-col>
             
-            <el-col :span="10">
-              </span><el-input type="text" placeholder="帅选条件" v-model="que.que" :disabled="!que.useQue" />
+            <el-col :span="20">
+              </span><el-input type="text" placeholder="帅选条件" v-model="que.que" />
             </el-col>
           </el-row>
           
@@ -28,8 +28,8 @@
            </el-row>
            <el-row :gutter="20">
              <el-col :span="2"><el-checkbox v-model="cut.useCut" @change="gro.useType = $event ? 'cut':'default'">使用</el-checkbox></el-col>
-             <el-col :span="10"><el-input type="text" placeholder="设置区间" :disabled="!cut.useCut" v-model="cut.cutBins" /></el-col>
-             <el-col :span="10"><el-input type="text" placeholder="对应的类别" :disabled="!cut.useCut" v-model="cut.cutLabels" /></el-col>
+             <el-col :span="10"><el-input type="text" placeholder="设置区间" v-model="cut.cutBins" /></el-col>
+             <el-col :span="10"><el-input type="text" placeholder="对应的类别" v-model="cut.cutLabels" /></el-col>
            </el-row>
         </div>
 

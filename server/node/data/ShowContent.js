@@ -1,5 +1,5 @@
-// const url = 'http://47.107.225.248:8000/ShowImg/'
-const url = 'http://localhost:8000/ShowImg/'
+const url = 'http://47.107.225.248:8000/ShowImg/'
+// const url = 'http://localhost:8000/ShowImg/'
 
 const purl = url+'population/'
 const turl = url+'temperature/'
@@ -100,10 +100,94 @@ const content = {
       content: [
         {
           text: '这份数据是1995年-2019年世界各国重要城市的每年每月每日的日均气温数据，共278万行数据',
-          img: [url+'temperature/data.png']
+          img: [turl+'data.png']
         }
       ]
     },
+    plot: {
+      title: '折线图',
+      content: [
+        {
+          title: '2000年-2019年广州市每年8月的月均气温(摄氏度)变化折线图',
+          text: '源数据中，气温数据是华氏度，需要用【自定义列】转化成摄氏度，如如气温数据是第七列，用c7表示',
+          img: [turl+'plot/10.png']
+        },
+        {
+          text: '选择数据,摄氏度=(华氏度-32)/1.8',
+          img:[turl+'plot/11.png']
+        },
+        {
+          text: '按照条件筛选出数据',
+          img:[turl+'plot/12.png']
+        },
+        {
+          text: '筛选后的数据，有每年8月每天的气温，需要按年分组，对气温求均值。',
+          img:[turl+'plot/13.png',turl+'plot/14.png',turl+'plot/15.png']
+        }
+      ]
+    },
+    bar:{
+      title: '柱状图',
+      content: [
+        {
+          title: '2000年-2019年广州市日均气温超过30℃的天数',
+          img:[turl+'bar/20.png']
+        },
+        {
+          text: '#1#表示第一个自定义列，即转换出的摄氏度列',
+          img:[turl+'bar/21.png']
+        },
+        {
+          text: '按年分组，并对天数计数',
+          img:[turl+'bar/22.png']
+        },
+        {
+          text: '设置样式，显示标注即每个柱子上的文本标注',
+          img:[turl+'bar/23.png',turl+'bar/24.png']
+        },
+        {
+          title: '2000年-2019年广州市每年的高温(>=30℃)，常温(15℃-30℃)，低温(<15℃)天数占一年天数的百分比',
+          img: [turl+'bar/25.png']
+        },
+        {
+          text: '数据处理',
+          img: [turl+'bar/26.png']
+        },
+        {
+          text: '设置样式',
+          img: [turl+'bar/27.png',turl+'bar/28.png']
+        },
+        {
+          title: '2015年-2019年丹麦(Denmark)，芬兰(Finland)，挪威(Norway)每年低于0℃的天数',
+          img:[turl+'bar/29.png']
+        },
+        {
+          text: '数据处理',
+          img:[turl+'bar/210.png',turl+'bar/211.png']
+        },
+        {
+          text: '设置样式',
+          img: [turl+'bar/212.png',turl+'bar/213.png']
+        }
+      ]
+    },
+    pie:{
+      title: '饼图',
+      content:[
+        {
+          title: '全球各地每天气温(华氏度)情况，酷冷(<32)，冷(32-59)，温(59-70)，热(70-86)，酷热(>86)',
+          img:[turl+'pie/30.png']
+        },
+        {
+          text: '数值型的华氏度转换为类别型，样式默认，查看效果',
+          img:[turl+'pie/31.png',turl+'pie/32.png']
+        },
+        {
+          text: '设置样式，再查看效果',
+          img:[turl+'pie/33.png',turl+'pie/34.png']
+        }
+      ]
+    }
     
   }
 }

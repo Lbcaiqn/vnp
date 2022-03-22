@@ -36,7 +36,8 @@ export default {
   margin: 0 auto;
   
   color: #fff;
-  background-color: #000;
+  background: url(../../assets/img/nav.png) no-repeat;
+  background-size: 100%;
   
 }
 .NavBarBox {

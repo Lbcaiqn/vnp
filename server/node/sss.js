@@ -39,7 +39,7 @@ app.all('/aaa',(request,response,next)=>{
     // })
     
     fs.writeFile(`../py/${fn}.json`,JSON.stringify(r),{encoding: 'utf8'},(err)=>{
-      exec('python ../py/1.py '+fn,(error,stdout,stderr) => {
+      exec('python3 ../py/1.py '+fn,(error,stdout,stderr) => {
         if(error) {
             console.info('pyrhon报错啦'+stderr)
             response.send('#')
@@ -50,7 +50,7 @@ app.all('/aaa',(request,response,next)=>{
         console.log(stdout)
         fs.stat(`./public/DrawImg/${fn}.png`,(err,data)=>{
           if(err) response.send('#')
-          else  response.send(`http://localhost:8000/DrawImg/${fn}.png?`+new Date().valueOf())
+          else  response.send(`http://47.107.225.248:8000/DrawImg/${fn}.png?`+new Date().valueOf())
         })
       
       })

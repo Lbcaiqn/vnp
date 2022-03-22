@@ -38,6 +38,7 @@ body {
 .nav-enter,
 .nav-leave-to {
   opacity: 0;
+  
 }
 .nav-enter-active,
 .nav-leave-active {

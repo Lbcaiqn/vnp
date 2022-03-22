@@ -118,9 +118,17 @@ export default {
       }
     }
   },
+  watch:{
+    'dataSelect.isSl'(newVal){
+      this.navItem=[]
+      for(let i in this.content[newVal]){
+        if(i!='dataDesc'){
+          this.navItem.push(this.content[newVal][i].title)
+        }
+      }
+    }
+  },
   mounted(){
-    
-    
     window.addEventListener('scroll',this.scrollFun)
 
   },
@@ -135,7 +143,8 @@ export default {
 .showNav {
   padding: 20px 10px 20px 40px;
   width: 1100px;
-  background-color: #000;
+  background: url(../../assets/img/nav.png) no-repeat;
+  background-size: 100%;
   border-top: 1px solid #fff;
   box-sizing: border-box;
 }

@@ -2,13 +2,13 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-# import matplotlib.ticker as ticker
 import sys
 import json
+import random
+
 #解析中文/标点符号
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False 
-# plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%.6f'))
 
 # 解析参数-------------------------------------------------------------
 
@@ -84,7 +84,7 @@ if mode != 'pie':
 if que['useQue'] and que['que'] != '':
   query=que['que']
   for i in range(len(newColList)):
-    query=query.replace('#1#',newColList[i])
+    query=query.replace('#'+str(i+1)+'#',newColList[i])
   data=data.query(query)
 
 #cut
@@ -307,7 +307,7 @@ elif mode == 'bar':
                    (b/hv+bottom)*1.01,
                    c,
                    ha='center',
-                   fontsize=str(10*(10/xd[0].size)/(0.8/float(jsonData['style']['bar'][i][1])))
+                   fontsize=str(15*(10/xd[0].size)/(0.8/float(jsonData['style']['bar'][i][1])))
                    )
         
     elif barStyle['orientation'] == 'horizontal' :
@@ -324,7 +324,7 @@ elif mode == 'bar':
                     b,
                     c,
                     va='center',
-                    fontsize=str(10*(10/xd[0].size)/(0.8/float(jsonData['style']['bar'][i][1])))
+                    fontsize=str(15*(10/xd[0].size)/(0.8/float(jsonData['style']['bar'][i][1])))
                     )
 #饼图
 elif mode == 'pie':
@@ -332,7 +332,13 @@ elif mode == 'pie':
   pieColor=[]
   pieExplode=[]
   for i in range(len(pieData)):
-    pieColor.append(None)
+    rr=hex(random.randint(0,255))[2:]
+    gg=hex(random.randint(0,255))[2:]
+    bb=hex(random.randint(0,255))[2:]
+    rr=rr if len(rr)==2 else '0'+rr
+    gg=gg if len(gg)==2 else '0'+gg
+    bb=bb if len(bb)==2 else '0'+bb
+    pieColor.append('#'+rr+gg+bb)
     pieExplode.append(0)
   for i in style['pie'][0][4]:
     if i['index']!='' and int(i['index'])<=len(pieData):
