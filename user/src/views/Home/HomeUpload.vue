@@ -1,6 +1,5 @@
 <template>
   <div id="HomeUpload">
-    
     <div class="uploadBox">
       <el-row :gutter="20">
         <el-col :span="4">
@@ -9,7 +8,12 @@
             <el-button size="medium" type="primary" :loading="true"  v-show="isUpload">上传中...</el-button>
           </el-upload>
         </el-col>
-        
+        <el-col :span="15" v-show="isUpload">
+          <div class="uploadBar">
+            <div ref="uploadBarBox"></div>
+          </div>
+        </el-col>
+        <el-col :span="4" v-show="isUpload">{{uploadWidth}}</el-col>
     </el-row>
     <el-row>
       <p>{{tipText}}</p>
@@ -26,15 +30,23 @@ export default {
   data(){
     return {
       isUpload: false,
-      tipText: ''
+      tipText: '',
+      uploadWidth: '0%'
     }
   },
   methods:{
     upload(files){
       this.$emit('beforeUpload')
       this.isUpload = true
+      this.uploadWidth = '0%'
+      this.$refs.uploadBarBox.style.width = 0
       this.tipText = ''
       let file = files.file
+      if(file.name.split('.')[file.name.split('.').length-1] != 'csv'){
+        this.isUpload = false
+        this.tipText = '上传失败，目前只支持csv文件哦'
+      }
+      else {
       const fileReader = new FileReader();
       fileReader.readAsText(file, "utf8"); //编码要与csv文件的编码一致，否则中文乱码
       fileReader.onload = () => {
@@ -63,6 +75,10 @@ export default {
         method: "post",
         data: fd,
         headers: {"Content-Type": "multipart/form-data",},
+        onUploadProgress: progress => {
+          this.$refs.uploadBarBox.style.width = Math.round((progress.loaded*100)/progress.total) + '%'        
+          this.uploadWidth = this.$refs.uploadBarBox.style.width != '100%' ? this.$refs.uploadBarBox.style.width : '文件配置中...'
+        }
       }).then(res=>{
           this.$emit('afterUpload',{
             cols,
@@ -73,6 +89,7 @@ export default {
         })
       
 
+      }
       }
     },
    
@@ -88,11 +105,20 @@ export default {
   padding: 20px;
 }
 .uploadBox {
-  margin-top: 50px ;
+  margin-top: 20px ;
 }
 .el-col {
-  height: 50px;
+  height: 40px;
   line-height: 50px;
+}
+.uploadBar {
+  height: 50px;
+  border: 1px solid #fff;
+}
+.uploadBar>div {
+  width: 0;
+  height: 50px;
+  background-color: blue;
 }
 p {
   margin-top: 20px;

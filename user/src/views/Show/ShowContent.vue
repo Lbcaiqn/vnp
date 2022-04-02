@@ -164,7 +164,7 @@ li {
   text-align: center;
 }
 li:hover {
-  background-color: orange;
+  background-color:  rgb(50,37,21);;
   cursor: pointer;
   transition: all 0.5s;
 }

@@ -55,7 +55,7 @@ li {
   cursor: pointer;
 }
 li:hover {
-  background-color: orange;
+  background-color:  rgb(50,37,21);;
   transition: all 0.5s;
 }
 </style>

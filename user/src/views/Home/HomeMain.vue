@@ -44,6 +44,13 @@
       </el-col>
     </el-row>
 
+    <div>
+      <h3 style="margin-top: 20px">可绘制图表预览</h3>
+      <div class="showChart" v-if="chart.isSelectChart != ''">
+        <img v-for="(i,iIndex) in showChart[chart.isSelectChart]" :key="iIndex" :src="i">
+      </div>
+    </div>
+
     <div class="tipDiv">
       <h3>提示：</h3>
       <p v-if="chart.isSelectChart == 'pie'">
@@ -51,6 +58,8 @@
     </p>
     <p>若选择的数据是一个x值对应多个y值，则需要在【高级选项】中对x进行分组，并将多个y合并成一个值</p>
     </div>
+
+    
 
     
 
@@ -103,7 +112,12 @@ export default {
           }
         },
         calculateNewColumn: [{ str: "", isShow: false }],
-        
+        showChart:{
+          scatter:[require('../../assets/img/HomeMain/scatter0.png')],
+          plot:[require('../../assets/img/HomeMain/plot0.png'),require('../../assets/img/HomeMain/plot1.png')],
+          bar:[require('../../assets/img/HomeMain/bar0.png'),require('../../assets/img/HomeMain/bar1.png'),require('../../assets/img/HomeMain/bar2.png'),require('../../assets/img/HomeMain/bar3.png')],
+          pie:[require('../../assets/img/HomeMain/pie0.png'),require('../../assets/img/HomeMain/pie1.png'),require('../../assets/img/HomeMain/pie2.png')]
+        }
       }
   },
   methods:{
@@ -253,5 +267,15 @@ export default {
 }
 .tipDiv p {
   margin: 10px 0;
+}
+
+.showChart {
+  display: flex;
+}
+.showChart>img {
+  margin: 20px 20px 0 0;
+  width: 20%;
+  height: 100px;
+  border: 1px solid #000;
 }
 </style>
