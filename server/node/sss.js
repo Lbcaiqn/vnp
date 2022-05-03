@@ -61,6 +61,13 @@ app.all('/aaa',(request,response,next)=>{
 })
 
 // 文件上传
+app.get('/already',(req,res) => {
+  let fileName = req.query.fileName
+  res.send({
+    already: fs.existsSync('../py/csv/'+fileName),
+    filePath: '../py/csv/'+fileName
+  })
+})
 app.post("/upload", multer({ dest: "../py/csv" }).any(), (req, res) => {
   //文件已经上传到 '../py/ 下'，现在需要对文件重命名
   //解构出文件名和后缀名

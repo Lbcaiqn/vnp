@@ -26,8 +26,8 @@ export default {
   padding: 0;
 }
 body {
-  background: url(./assets/img/a.png) no-repeat fixed;
-  // background: url(./assets/img/1.png) no-repeat fixed;
+  // background: url(./assets/img/a.png) no-repeat fixed;
+  background: url(./assets/img/1.png) no-repeat fixed;
   background-size: 100%;
 }
 #app {

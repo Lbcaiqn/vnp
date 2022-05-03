@@ -71,22 +71,42 @@ export default {
       
       //上传
       req({
-        url: '/upload',
-        method: "post",
-        data: fd,
-        headers: {"Content-Type": "multipart/form-data",},
-        onUploadProgress: progress => {
-          this.$refs.uploadBarBox.style.width = Math.round((progress.loaded*100)/progress.total) + '%'        
-          this.uploadWidth = this.$refs.uploadBarBox.style.width != '100%' ? this.$refs.uploadBarBox.style.width : '文件配置中...'
+        url: 'already',
+        method: 'get',
+        params: {
+          fileName: file.name
         }
-      }).then(res=>{
+      }).then(res => {
+        if(res.data.already){
+          this.$refs.uploadBarBox.style.width = '100%'
           this.$emit('afterUpload',{
             cols,
-            filePath: res.data
+            filePath: res.data.filePath
           })
           this.isUpload = false
-          this.tipText = '文件上传成功！'
-        })
+          this.tipText = '文件上传成功'
+        }
+        else{
+          req({
+            url: '/upload',
+            method: "post",
+            data: fd,
+            headers: {"Content-Type": "multipart/form-data",},
+            onUploadProgress: progress => {
+              this.$refs.uploadBarBox.style.width = Math.round((progress.loaded*100)/progress.total) + '%'        
+              this.uploadWidth = this.$refs.uploadBarBox.style.width != '100%' ? this.$refs.uploadBarBox.style.width : '文件配置中...'
+            }
+          }).then(res=>{
+            this.$emit('afterUpload',{
+              cols,
+              filePath: res.data
+            })
+            this.isUpload = false
+            this.tipText = '文件上传成功！'
+          })
+        }
+      })
+      
       
 
       }
